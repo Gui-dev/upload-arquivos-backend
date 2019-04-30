@@ -5,6 +5,7 @@ import express from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose'
 import path from 'path'
+import cors from 'cors'
 
 import routes from './routes'
 
@@ -13,6 +14,11 @@ import routes from './routes'
  */
 const app = express()
 const port = process.env.PORT || 3333
+
+/**
+ * configurando o CORS
+ */
+app.use( cors() )
 
 /**
  * Database setup
