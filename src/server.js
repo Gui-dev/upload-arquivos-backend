@@ -4,6 +4,7 @@ dotenv.config()
 import express from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose'
+import path from 'path'
 
 import routes from './routes'
 
@@ -17,7 +18,7 @@ const port = process.env.PORT || 3333
  * Database setup
  */
 
-mongoose.connect('mongodb+srv://gui:gui@cluster0-inoc3.mongodb.net/upload?retryWrites=true', {
+mongoose.connect( process.env.MONGO_URL, {
   useNewUrlParser: true
 })
 
@@ -27,6 +28,9 @@ mongoose.connect('mongodb+srv://gui:gui@cluster0-inoc3.mongodb.net/upload?retryW
 app.use( express.json() )
 app.use( express.urlencoded( { extended: true } ) )
 app.use( morgan( 'combined' ) )
+app.use( '/files', express.static( path.resolve( 
+  __dirname, '..', 'tmp', 'uploads'
+ ) ) )
 
 /**
  * Configuração das Rotas

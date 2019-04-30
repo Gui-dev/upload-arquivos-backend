@@ -17,8 +17,8 @@ const storageTypes = {
 
         if( err ) cb( err )
 
-        const fileName = `${hash.toString( 'hex' )}-${file.originalname}`
-        cb( null, fileName )
+        file.key = `${hash.toString( 'hex' )}-${file.originalname}`
+        cb( null, file.key )
       } )
     }
 
@@ -27,7 +27,18 @@ const storageTypes = {
   s3: multerS3( {
 
     s3: new aws.S3(),
-    bucket: 'upload-files'
+    bucket: 'upload-files',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: 'public-read',
+    key: ( req, file, cb ) => {
+      crypto.randomBytes( 16, ( err, hash ) => {
+
+        if( err ) cb( err )
+
+        const fileName = `${hash.toString( 'hex' )}-${file.originalname}`
+        cb( null, fileName )
+      } )
+    }
   } )
   
 }
@@ -36,7 +47,7 @@ export default {
 
   dest: path.resolve( __dirname, '..', '..', 'tmp', 'uploads' ),
   
-  storage: storageTypes.local,
+  storage: storageTypes[ process.env.STORAGE_TYPES ],
   
   limits: {
     fileSize: 2 * 1024 * 1024
