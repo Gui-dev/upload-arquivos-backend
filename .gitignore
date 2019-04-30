@@ -1,5 +1,5 @@
 node_modules
 .env
 *.log
-tmp/uploads
+tmp/*
 !tmp/uploads/.gitkeep
