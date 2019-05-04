@@ -13,16 +13,13 @@ const Post = new mongoose.Schema( {
     required: true 
   },
   size: {
-    type: Number,
-    required: true 
+    type: Number 
   },
   key: { 
-    type: String,
-    required: true 
+    type: String
   },
   url: {
-    type: String,
-    // required: true
+    type: String
   }
 }, {
   timestamps: true
@@ -31,7 +28,7 @@ const Post = new mongoose.Schema( {
 Post.pre( 'save', function() {
 
   if( !this.url ) {
-    const url = process.env.URL
+    const url = process.env.URL || 'http://192.168.0.105:3333'
     this.url =`${url}/files/${encodeURIComponent(this.key)}`
   }
 } )

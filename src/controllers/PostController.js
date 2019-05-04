@@ -5,12 +5,14 @@ class PostController {
   async store( req, res ) {
 
     try {
+      
       const { originalname: name, size, key, location: url = '' } = req.file
       const post = await Post.create( { name, size, key, url } )
 
       return res.status( 200 ).json( post )
     } catch (error) {
       
+      console.log( error )
       return res.status( 400 ).json( {
         error: "Erro ao fazer upload do arquivo"
       } )
